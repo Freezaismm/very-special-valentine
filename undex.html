@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special for Nadine ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #ffeef2;
+            --book-cover: #ff7096; /* Warna cover lebih fresh */
+            --paper-color: #fffdfd;
+            --text-color: #5a5a5a;
+            --accent-color: #ff4d6d;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#ffb3c1 1.5px, transparent 1.5px);
+            background-size: 25px 25px;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        /* --- STYLING BUKU --- */
+        .book {
+            position: relative;
+            width: 320px; /* Sedikit lebih lebar */
+            height: 480px;
+            perspective: 1500px;
+            transition: transform 0.5s;
+        }
+
+        .paper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform-origin: left;
+            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            border-radius: 5px 15px 15px 5px; /* Sisi kanan lebih bulat */
+            cursor: pointer;
+        }
+
+        /* Sisi Depan & Belakang */
+        .front, .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 5px 15px 15px 5px;
+            padding: 25px;
+            box-sizing: border-box;
+            background-color: var(--paper-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-left: 5px solid rgba(0,0,0,0.05); /* Efek jilid */
+        }
+
+        .front { z-index: 2; }
+        .back { transform: rotateY(180deg); z-index: 1; }
+
+        /* Z-Index Awal */
+        #p1 { z-index: 4; }
+        #p2 { z-index: 3; }
+        #p3 { z-index: 2; }
+
+        .paper.flipped { transform: rotateY(-180deg); }
+
+        /* --- CONTENT STYLING --- */
+        
+        /* Typography */
+        h1, h2 {
+            font-family: 'Dancing Script', cursive;
+            margin: 0;
+            color: var(--accent-color);
+        }
+        
+        p { font-size: 0.9rem; line-height: 1.5; color: var(--text-color); margin-top: 10px; }
+        
+        /* Cover Page */
+        #p1 .front {
+            background: linear-gradient(135deg, #ff9a9e 0%, #ff7096 100%);
+            color: white;
+            border: 4px solid white;
+        }
+        #p1 .front h1 { color: white; font-size: 3.5rem; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .name-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        /* Polaroid Frames */
+        .polaroid {
+            background: white;
+            padding: 10px 10px 35px 10px; /* Bawah lebih lebar */
+            box-shadow: 2px 4px 10px rgba(0,0,0,0.15);
+            transform: rotate(-3deg);
+            width: 85%;
+            transition: transform 0.3s;
+            border: 1px solid #eee;
+        }
+        .polaroid:hover { transform: rotate(0deg) scale(1.02); }
+        .polaroid img { width: 100%; border-radius: 2px; display: block; }
+
+        /* Grid Foto */
+        .collage {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+            margin-top: 10px;
+            padding: 5px;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transform: rotate(2deg);
+            border: 1px solid #eee;
+        }
+        .collage img {
+            width: 100%;
+            height: 90px; /* Tinggi seragam */
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        /* Text Styling */
+        .text-box {
+            background: rgba(255, 238, 242, 0.5);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed var(--book-cover);
+            margin-top: 15px;
+            font-size: 0.85rem;
+        }
+        
+        /* Footer/End Page */
+        .end-page {
+            width:100%; height:100%; 
+            background: linear-gradient(45deg, #ff7096, #ff4d6d);
+            display:flex; justify-content:center; align-items:center; 
+            flex-direction:column; color:white;
+            border-radius: 5px 15px 15px 5px;
+            border: 4px solid white;
+        }
+
+        .tap-hint { 
+            font-size: 0.8rem; margin-top: 40px; opacity: 0.8; 
+            animation: bounce 1.5s infinite; 
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px; border-radius: 15px;
+        }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+        /* Tombol Tutup */
+        .btn-reset {
+            position: absolute;
+            bottom: 30px;
+            padding: 12px 30px;
+            background: white;
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(255, 77, 109, 0.3);
+            color: var(--accent-color);
+            font-weight: bold;
+            font-family: 'Quicksand', sans-serif;
+            display: none;
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.2s;
+        }
+        .btn-reset:active { transform: scale(0.95); }
+
+        /* Responsive Mobile */
+        @media (max-width: 600px) {
+            .book { width: 85vw; height: 130vw; max-height: 550px; }
+            h1 { font-size: 2.8rem !important; }
+            .collage img { height: 75px; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="https://files.catbox.moe/w4su1g.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="book" id="book">
+        
+        <div class="paper" id="p1">
+            <div class="front">
+                <h1>Happy<br>Valentine</h1>
+                <div class="name-tag">Nadine Syakira Pretty ✨</div>
+                <div class="tap-hint">Ketuk untuk membuka ➡️</div>
+            </div>
+            <div class="back">
+                <div class="polaroid">
+                    <img src="https://img.sanishtech.com/u/d9bb6cbd638b4c384f0eadaf7b1d857b.png" alt="Foto Kita">
+                </div>
+                <div class="text-box">
+                    Haiiii sayangg hari ini cukup spesial yaaa.. <br>
+                    jadi mungkin hari ini ga ada game nihh, tapi ada apresiasi nihh buat kamu yang udah jadi wanita hebatt bangettt 🌸<br><br>
+                    <i>Enjoy the book ya!</i>
+                </div>
+            </div>
+        </div>
+
+        <div class="paper" id="p2">
+            <div class="front">
+                <h2 style="font-size:2.2rem;">Will you be my<br>Valentine?</h2>
+                <div class="text-box" style="background:none; border:none; text-align:justify;">
+                    <p>
+                        First off all, makasihh banyakk ya udah hadir di hidupkuu inii yaaaa. <b>Appreciated a lot Nadine Syakira prettyyy!</b> <br><br>
+                        terimakasihh udah hadir di hidupku yang berantakan dan penuh ketidakjelasan ini, aku bener bener mau ngucapin terima kasih karena udah milihh aku di antara banyak orang lain yang lebih sempurnaa.<br><br>
+                        Aku bersyukur bangett bisa jadi pilihanmu sayangg. 
+                    </p>
+                </div>
+                <div style="font-size:24px; color:#ff4d6d;">🩵💙🩵💙</div>
+            </div>
+            <div class="back">
+                <h2>Our Moments</h2>
+                <div class="collage">
+                    <img src="https://img.sanishtech.com/u/819ec1bfb03f5efe25e232c3a619d070.jpg" alt="Foto 1">
+                    <img src="https://img.sanishtech.com/u/57fbfd15b0515d046be93faf8ec642b6.jpg" alt="Foto 2">
+                    <img src="https://img.sanishtech.com/u/518693873648abed682b0d5e53270168.jpg" alt="Foto 3">
+                    <img src="https://img.sanishtech.com/u/69124a68cfe06a0b6013edc8748f3378.jpg" alt="Foto 4">
+                </div>
+                <p style="font-size:0.8rem; font-style:italic; color:#888; margin-top:15px;">"Not a lot, just forever"</p>
+            </div>
+        </div>
+
+        <div class="paper" id="p3">
+            <div class="front">
+                <div class="polaroid" style="transform: rotate(3deg);">
+                    <img src="https://img.sanishtech.com/u/7b1e74b033fda6ec0e114fbe4ab50b84.png" alt="Foto Lucu">
+                </div>
+                <div class="text-box">
+                    Waaa kalau dilanjut ga cukup nih bukunya wkwk.<br>
+                    Ternyata harus ada game lagi nih buat ngelanjutin longteksnyaa yaaa.. hehe maaff ya kalau kali ini sesederhana inii.<br><br>
+                    <b>Aku tunggu disana ya sayanggg</b> ❤️
+                </div>
+            </div>
+            <div class="back">
+                <div class="end-page">
+                    <h1 style="color:white; font-size:2.5rem;">See You<br>Sayang!</h1>
+                    <p style="color:white; opacity:0.9; margin-top:20px;">Je t'aime bien 🩵💙</p>
+                    <div style="margin-top:40px; font-size:0.8rem; border-top:1px solid rgba(255,255,255,0.5); padding-top:10px;">
+                        Fathan & Nadine Forever
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <button class="btn-reset" id="resetBtn" onclick="closeBook()">Tutup Buku 📖</button>
+
+    <script>
+        // Logic Buku
+        const music = document.getElementById('bgMusic');
+        const p1 = document.getElementById('p1');
+        const p2 = document.getElementById('p2');
+        const p3 = document.getElementById('p3');
+        const resetBtn = document.getElementById('resetBtn');
+
+        let currentLocation = 1;
+
+        // Event Listener untuk setiap halaman
+        p1.addEventListener('click', () => {
+            if(currentLocation === 1) {
+                openBook();
+                p1.classList.add('flipped');
+                p1.style.zIndex = 1; 
+                currentLocation = 2;
+                playMusic();
+            }
+        });
+
+        p2.addEventListener('click', () => {
+            if(currentLocation === 2) {
+                p2.classList.add('flipped');
+                p2.style.zIndex = 2;
+                currentLocation = 3;
+            }
+        });
+
+        p3.addEventListener('click', () => {
+            if(currentLocation === 3) {
+                p3.classList.add('flipped');
+                p3.style.zIndex = 3;
+                currentLocation = 4;
+                resetBtn.style.display = 'block'; 
+            }
+        });
+
+        function closeBook() {
+            // Balikin semua halaman
+            p3.classList.remove('flipped');
+            setTimeout(() => p3.style.zIndex = 2, 200); // Delay z-index biar ga glitch
+            
+            setTimeout(() => {
+                p2.classList.remove('flipped');
+                setTimeout(() => p2.style.zIndex = 3, 200);
+            }, 200);
+
+            setTimeout(() => {
+                p1.classList.remove('flipped');
+                setTimeout(() => p1.style.zIndex = 4, 200);
+            }, 400);
+
+            currentLocation = 1;
+            resetBtn.style.display = 'none';
+            
+            // Kembalikan posisi buku ke tengah layar (untuk mobile)
+            if(window.innerWidth < 600) {
+                 document.getElementById('book').style.transform = "translateX(0)";
+            } else {
+                 document.getElementById('book').style.transform = "translateX(0)";
+            }
+        }
+
+        function openBook() {
+            // Geser buku sedikit ke kanan biar centered saat terbuka (khusus Desktop)
+            if(window.innerWidth >= 600) {
+                 document.getElementById('book').style.transform = "translateX(50%)";
+            }
+        }
+
+        function playMusic() {
+            music.play().catch(e => console.log("Audio perlu interaksi user"));
+        }
+    </script>
+</body>
+</html>
